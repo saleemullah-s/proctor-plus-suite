@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CreateStudent from "@/components/CreateStudent";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -141,31 +142,57 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Recent Students */}
-              <Card className="shadow-card">
+              {/* Admin Info Card */}
+              <Card className="shadow-card border-primary">
                 <CardHeader>
-                  <CardTitle>Recent Students</CardTitle>
-                  <CardDescription>Newly added student accounts</CardDescription>
+                  <CardTitle className="text-primary">Admin Privileges</CardTitle>
+                  <CardDescription>You have full administrative control</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {recentStudents.map((student) => (
-                    <div key={student.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                      <div>
-                        <p className="font-medium text-card-foreground">{student.name}</p>
-                        <p className="text-sm text-muted-foreground">{student.studentId} • {student.email}</p>
-                      </div>
-                      <Badge variant={student.status === "active" ? "default" : "secondary"}>
-                        {student.status}
-                      </Badge>
-                    </div>
-                  ))}
-                  <Button variant="outline" className="w-full">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add New Student
-                  </Button>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Users className="h-4 w-4 text-primary" />
+                    <span>Create & manage student accounts</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <FileText className="h-4 w-4 text-secondary" />
+                    <span>Design & schedule examinations</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <BarChart3 className="h-4 w-4 text-success" />
+                    <span>Access all reports & analytics</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <AlertTriangle className="h-4 w-4 text-warning" />
+                    <span>Monitor security violations</span>
+                  </div>
+                  <div className="pt-3">
+                    <CreateStudent />
+                  </div>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Recent Students Overview */}
+            <Card className="shadow-card">
+              <CardHeader>
+                <CardTitle>Recent Students</CardTitle>
+                <CardDescription>Student accounts you've created recently</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {recentStudents.map((student) => (
+                  <div key={student.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                    <div>
+                      <p className="font-medium text-card-foreground">{student.name}</p>
+                      <p className="text-sm text-muted-foreground">{student.studentId} • {student.email}</p>
+                    </div>
+                    <Badge variant={student.status === "active" ? "default" : "secondary"}>
+                      {student.status}
+                    </Badge>
+                  </div>
+                ))}
+                <CreateStudent />
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="students">
@@ -174,26 +201,55 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>Student Management</CardTitle>
-                    <CardDescription>Add, edit, and manage student accounts</CardDescription>
+                    <CardDescription>Create student accounts and manage access credentials. Only admins can create student logins.</CardDescription>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline">
                       <Upload className="h-4 w-4 mr-2" />
                       Import Excel
                     </Button>
-                    <Button variant="hero">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Student
-                    </Button>
+                    <CreateStudent />
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12">
-                  <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-card-foreground mb-2">Student Management</h3>
-                  <p className="text-muted-foreground mb-4">Create and manage student accounts for your institution</p>
-                  <Button variant="hero">Get Started</Button>
+                {/* Student List */}
+                <div className="space-y-4">
+                  {recentStudents.map((student) => (
+                    <div key={student.id} className="flex items-center justify-between p-4 rounded-lg border bg-card">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 rounded-full bg-primary-light">
+                          <Users className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-card-foreground">{student.name}</p>
+                          <p className="text-sm text-muted-foreground">{student.studentId} • {student.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge variant={student.status === "active" ? "default" : "secondary"}>
+                          {student.status}
+                        </Badge>
+                        <Button variant="outline" size="sm">Edit</Button>
+                        <Button variant="outline" size="sm">Reset Password</Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 p-6 bg-primary-light rounded-lg">
+                  <h3 className="text-lg font-semibold text-card-foreground mb-2">Admin Control</h3>
+                  <p className="text-muted-foreground mb-4">
+                    As an administrator, you have full control over student accounts. Students cannot self-register - 
+                    only you can create their login credentials and manage their access to the examination system.
+                  </p>
+                  <div className="flex gap-2">
+                    <CreateStudent />
+                    <Button variant="outline">
+                      <Download className="h-4 w-4 mr-2" />
+                      Export Student List
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
