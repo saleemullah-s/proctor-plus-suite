@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import CreatorSetup from "./pages/CreatorSetup";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import ExamInterface from "./pages/ExamInterface";
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/setup" element={<CreatorSetup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/student/dashboard" element={<StudentDashboard />} />
           <Route path="/exam/:examId" element={<ExamInterface />} />

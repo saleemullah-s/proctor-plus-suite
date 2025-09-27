@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CreateStudent from "@/components/CreateStudent";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,10 +14,12 @@ import {
   AlertTriangle,
   Plus,
   Download,
-  Upload
+  Upload,
+  User
 } from "lucide-react";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [stats] = useState({
     totalStudents: 247,
     activeExams: 3,
@@ -46,10 +49,16 @@ const AdminDashboard = () => {
               <h1 className="text-2xl font-bold text-card-foreground">Admin Dashboard</h1>
               <p className="text-muted-foreground">Manage students, exams, and monitor system activity</p>
             </div>
-            <Button variant="outline">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => navigate("/profile")}>
+                <User className="h-4 w-4 mr-2" />
+                Profile
+              </Button>
+              <Button variant="outline">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Button>
+            </div>
           </div>
         </div>
       </header>

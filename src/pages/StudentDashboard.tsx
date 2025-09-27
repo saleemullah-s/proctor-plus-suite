@@ -97,9 +97,15 @@ const StudentDashboard = () => {
                 <p className="font-medium text-card-foreground">{studentInfo.studentId}</p>
                 <p className="text-sm text-muted-foreground">{studentInfo.department}</p>
               </div>
-              <div className="p-2 rounded-full bg-primary-light">
-                <User className="h-6 w-6 text-primary" />
-              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate("/profile")}
+                className="flex items-center gap-2"
+              >
+                <User className="h-4 w-4" />
+                Profile
+              </Button>
             </div>
           </div>
         </div>

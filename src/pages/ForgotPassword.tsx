@@ -5,60 +5,86 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap, Shield, User } from "lucide-react";
+import { GraduationCap, ArrowLeft, Mail, Shield, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const Login = () => {
-  const [adminCredentials, setAdminCredentials] = useState({
-    email: "",
-    password: ""
-  });
+const ForgotPassword = () => {
+  const [adminEmail, setAdminEmail] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   
-  const [studentCredentials, setStudentCredentials] = useState({
-    studentId: "",
-    password: ""
-  });
-
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleAdminLogin = (e: React.FormEvent) => {
+  const handleAdminReset = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate admin login
-    if (adminCredentials.email && adminCredentials.password) {
+    if (adminEmail) {
       toast({
-        title: "Admin Login Successful",
-        description: "Welcome to your admin dashboard",
+        title: "Reset Link Sent",
+        description: "Check your email for password reset instructions",
       });
-      navigate("/admin/dashboard");
+      setIsSubmitted(true);
     } else {
       toast({
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Please enter your email address",
         variant: "destructive",
       });
     }
   };
 
-  const handleStudentLogin = (e: React.FormEvent) => {
+  const handleStudentReset = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate student login
-    if (studentCredentials.studentId && studentCredentials.password) {
+    if (studentId) {
       toast({
-        title: "Student Login Successful", 
-        description: "Welcome to your student dashboard",
+        title: "Request Submitted",
+        description: "Contact your administrator for password reset assistance",
       });
-      navigate("/student/dashboard");
+      setIsSubmitted(true);
     } else {
       toast({
         title: "Error",
-        description: "Please fill in all fields",
+        description: "Please enter your student ID",
         variant: "destructive",
       });
     }
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-light to-secondary-light flex items-center justify-center p-4">
+        <Card className="w-full max-w-md shadow-elevated border-0">
+          <CardContent className="p-8 text-center">
+            <div className="p-4 rounded-full bg-success-light mx-auto mb-4 w-fit">
+              <Mail className="h-8 w-8 text-success" />
+            </div>
+            <h2 className="text-2xl font-bold text-card-foreground mb-4">Request Submitted</h2>
+            <p className="text-muted-foreground mb-6">
+              We've received your password reset request. Please check your email or contact your administrator.
+            </p>
+            <div className="space-y-3">
+              <Button 
+                variant="hero" 
+                className="w-full"
+                onClick={() => navigate("/login")}
+              >
+                Back to Login
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setIsSubmitted(false)}
+              >
+                Submit Another Request
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-light to-secondary-light flex items-center justify-center p-4">
@@ -75,10 +101,10 @@ const Login = () => {
           
           <div className="space-y-4">
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-              Welcome Back
+              Password Recovery
             </h2>
             <p className="text-lg text-muted-foreground">
-              Sign in to access your secure examination platform
+              Reset your password to regain access to your examination platform
             </p>
           </div>
 
@@ -86,19 +112,19 @@ const Login = () => {
             <div className="flex items-center gap-3 p-4 rounded-xl bg-card shadow-card">
               <Shield className="h-6 w-6 text-primary" />
               <div>
-                <p className="font-medium text-card-foreground">Secure Access</p>
-                <p className="text-sm text-muted-foreground">End-to-end encrypted authentication</p>
+                <p className="font-medium text-card-foreground">Secure Recovery</p>
+                <p className="text-sm text-muted-foreground">Safe and encrypted password reset process</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right side - Login forms */}
+        {/* Right side - Reset forms */}
         <Card className="shadow-elevated border-0">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Sign In</CardTitle>
+            <CardTitle className="text-2xl">Reset Password</CardTitle>
             <CardDescription>
-              Choose your account type to continue
+              Choose your account type to reset your password
             </CardDescription>
           </CardHeader>
           
@@ -116,64 +142,54 @@ const Login = () => {
               </TabsList>
 
               <TabsContent value="admin">
-                <form onSubmit={handleAdminLogin} className="space-y-4">
+                <form onSubmit={handleAdminReset} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="admin-email">Email Address</Label>
+                    <Label htmlFor="admin-email">Admin Email Address</Label>
                     <Input
                       id="admin-email"
                       type="email"
                       placeholder="admin@college.edu"
-                      value={adminCredentials.email}
-                      onChange={(e) => setAdminCredentials(prev => ({ ...prev, email: e.target.value }))}
+                      value={adminEmail}
+                      onChange={(e) => setAdminEmail(e.target.value)}
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="admin-password">Password</Label>
-                    <Input
-                      id="admin-password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={adminCredentials.password}
-                      onChange={(e) => setAdminCredentials(prev => ({ ...prev, password: e.target.value }))}
-                      required
-                    />
+                  <div className="p-4 bg-muted/50 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      A password reset link will be sent to your registered email address. 
+                      This link will expire in 24 hours for security purposes.
+                    </p>
                   </div>
 
                   <Button type="submit" variant="hero" className="w-full h-12">
-                    Sign In as Admin
+                    Send Reset Link
                   </Button>
                 </form>
               </TabsContent>
 
               <TabsContent value="student">
-                <form onSubmit={handleStudentLogin} className="space-y-4">
+                <form onSubmit={handleStudentReset} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="student-id">Student ID</Label>
                     <Input
                       id="student-id"
                       placeholder="Enter your student ID"
-                      value={studentCredentials.studentId}
-                      onChange={(e) => setStudentCredentials(prev => ({ ...prev, studentId: e.target.value }))}
+                      value={studentId}
+                      onChange={(e) => setStudentId(e.target.value)}
                       required
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="student-password">Password</Label>
-                    <Input
-                      id="student-password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={studentCredentials.password}
-                      onChange={(e) => setStudentCredentials(prev => ({ ...prev, password: e.target.value }))}
-                      required
-                    />
+                  <div className="p-4 bg-warning-light rounded-lg">
+                    <p className="text-sm text-warning-dark">
+                      <strong>Note:</strong> Students cannot reset passwords directly. 
+                      Your request will be forwarded to the administrator who will assist you with password recovery.
+                    </p>
                   </div>
 
                   <Button type="submit" variant="secondary" className="w-full h-12">
-                    Sign In as Student
+                    Request Password Reset
                   </Button>
                 </form>
               </TabsContent>
@@ -181,21 +197,22 @@ const Login = () => {
 
             <div className="mt-6 text-center space-y-3">
               <Button
-                variant="link"
-                className="p-0 h-auto font-medium text-primary"
-                onClick={() => navigate("/forgot-password")}
+                variant="outline"
+                className="w-full"
+                onClick={() => navigate("/login")}
               >
-                Forgot your password?
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Login
               </Button>
               
               <p className="text-sm text-muted-foreground">
-                Need to set up a new institution?{" "}
+                Remember your password?{" "}
                 <Button
                   variant="link"
                   className="p-0 h-auto font-medium"
-                  onClick={() => navigate("/setup")}
+                  onClick={() => navigate("/login")}
                 >
-                  Create Setup
+                  Sign In
                 </Button>
               </p>
             </div>
@@ -206,4 +223,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
